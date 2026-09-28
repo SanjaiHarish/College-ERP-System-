@@ -1,0 +1,38 @@
+{% extends 'erp/base.html' %}
+
+{% block title %}Student Portal — College ERP{% endblock %}
+
+{% block navbar_links %}
+<a href="{% url 'erp:home' %}">Home</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header" style="text-align: center;">
+        <h1>Student Portal</h1>
+        <p>Enter your Roll Number, Department, and Academic Year to view results</p>
+    </div>
+
+    <div class="card form-container">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_roll_number">Roll Number</label>
+                {{ form.roll_number }}
+                {{ form.roll_number.errors }}
+            </div>
+            <div class="form-group">
+                <label for="id_department">Department</label>
+                {{ form.department }}
+                {{ form.department.errors }}
+            </div>
+            <div class="form-group">
+                <label for="id_year">Academic Year</label>
+                {{ form.year }}
+                {{ form.year.errors }}
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Search</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

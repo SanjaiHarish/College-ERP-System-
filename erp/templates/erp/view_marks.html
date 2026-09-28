@@ -1,0 +1,65 @@
+{% extends 'erp/base.html' %}
+
+{% block title %}View Uploaded Marks — College ERP{% endblock %}
+
+{% block navbar_links %}
+<a href="{% url 'erp:teacher_dashboard' %}">Dashboard</a>
+<a href="{% url 'erp:teacher_logout' %}">Logout</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="breadcrumb">
+        <a href="{% url 'erp:teacher_dashboard' %}">Dashboard</a> &rsaquo;
+        <a href="{% url 'erp:marks_dashboard' %}">Marks &amp; Attendance</a> &rsaquo; View Marks
+    </div>
+
+    <div class="page-header">
+        <h1>View Uploaded Marks</h1>
+        <p>Marks for <strong>{{ teacher.subject.subject_name }}</strong> in <strong>{{ teacher.department }}</strong> department</p>
+    </div>
+
+    {% if marks_list %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Student Name</th>
+                    <th>Subject</th>
+                    <th>Internal 1</th>
+                    <th>Internal 2</th>
+                    <th>Attendance</th>
+                    <th>Average</th>
+                    <th>Grade</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mark in marks_list %}
+                <tr>
+                    <td>{{ mark.student.roll_number }}</td>
+                    <td>{{ mark.student.name }}</td>
+                    <td>{{ mark.subject.subject_name }}</td>
+                    <td>{{ mark.internal1 }}</td>
+                    <td>{{ mark.internal2 }}</td>
+                    <td>{{ mark.attendance }}%</td>
+                    <td>{{ mark.average }}</td>
+                    <td><span class="grade-badge grade-{{ mark.grade }}">{{ mark.grade }}</span></td>
+                    <td>
+                        <a href="{% url 'erp:edit_marks' mark.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="card empty-state">
+        <h3>No Marks Uploaded Yet</h3>
+        <p>Start by entering marks for your students.</p>
+        <a href="{% url 'erp:enter_marks' %}" class="btn btn-primary" style="margin-top: 1rem;">Enter Marks</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

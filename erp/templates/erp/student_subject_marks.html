@@ -1,0 +1,91 @@
+{% extends 'erp/base.html' %}
+
+{% block title %}{{ subject.subject_name }} — {{ student.name }} — College ERP{% endblock %}
+
+{% block navbar_links %}
+<a href="{% url 'erp:home' %}">Home</a>
+<a href="{% url 'erp:student_results' student.roll_number %}">All Subjects</a>
+<a href="{% url 'erp:student_portal' %}">Search Again</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="breadcrumb">
+        <a href="{% url 'erp:student_results' student.roll_number %}">Subjects</a> &rsaquo; {{ subject.subject_name }}
+    </div>
+
+    <div class="page-header">
+        <h1>{{ subject.subject_name }}</h1>
+        <p>Internal marks and attendance for {{ student.name }}</p>
+    </div>
+
+    <div class="info-card">
+        <h2>Student Information</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Student Name</label>
+                <p>{{ student.name }}</p>
+            </div>
+            <div class="info-item">
+                <label>Roll Number</label>
+                <p>{{ student.roll_number }}</p>
+            </div>
+            <div class="info-item">
+                <label>Department</label>
+                <p>{{ student.department }}</p>
+            </div>
+            <div class="info-item">
+                <label>Academic Year</label>
+                <p>{{ student.year }}</p>
+            </div>
+        </div>
+    </div>
+
+    {% if marks %}
+    <div class="card marks-result-card">
+        <h2 style="color: var(--primary-dark); margin-bottom: 1.5rem;">{{ subject.subject_name }}</h2>
+        <div class="marks-detail-grid">
+            <div class="marks-detail-item">
+                <label>Internal Assessment 1</label>
+                <p>{{ marks.internal1 }}</p>
+            </div>
+            <div class="marks-detail-item">
+                <label>Internal Assessment 2</label>
+                <p>{{ marks.internal2 }}</p>
+            </div>
+            <div class="marks-detail-item">
+                <label>Attendance</label>
+                <p>{{ marks.attendance }}%</p>
+            </div>
+            <div class="marks-detail-item">
+                <label>Average</label>
+                <p>{{ marks.average }}</p>
+            </div>
+            <div class="marks-detail-item">
+                <label>Grade</label>
+                <p><span class="grade-badge grade-{{ marks.grade }}">{{ marks.grade }}</span></p>
+            </div>
+            <div class="marks-detail-item">
+                <label>Teacher</label>
+                <p>{{ marks.teacher.name }}</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; text-align: center;">
+            <a href="{% url 'erp:download_subject_pdf' student.roll_number subject.pk %}" class="btn btn-success">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+                Download {{ subject.subject_name }} PDF
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="card empty-state">
+        <h3>Marks Not Yet Uploaded</h3>
+        <p>Your {{ subject.subject_name }} marks have not been uploaded by your teacher yet. Please check back later.</p>
+        <a href="{% url 'erp:student_results' student.roll_number %}" class="btn btn-secondary" style="margin-top: 1rem;">Back to Subjects</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

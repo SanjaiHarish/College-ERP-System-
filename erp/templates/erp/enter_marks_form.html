@@ -1,0 +1,78 @@
+{% extends 'erp/base.html' %}
+
+{% block title %}Enter Marks — {{ student.name }} — College ERP{% endblock %}
+
+{% block navbar_links %}
+<a href="{% url 'erp:teacher_dashboard' %}">Dashboard</a>
+<a href="{% url 'erp:teacher_logout' %}">Logout</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="breadcrumb">
+        <a href="{% url 'erp:teacher_dashboard' %}">Dashboard</a> &rsaquo;
+        <a href="{% url 'erp:marks_dashboard' %}">Marks &amp; Attendance</a> &rsaquo;
+        <a href="{% url 'erp:enter_marks' %}">Enter Marks</a> &rsaquo; {{ student.name }}
+    </div>
+
+    <div class="page-header">
+        <h1>{% if existing %}Update{% else %}Enter{% endif %} Marks</h1>
+        <p>{% if existing %}Update existing marks for{% else %}Enter marks for{% endif %} {{ student.name }}</p>
+    </div>
+
+    <div class="student-detail">
+        <h3>Student Details</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>Roll Number</label>
+                <p>{{ student.roll_number }}</p>
+            </div>
+            <div class="detail-item">
+                <label>Name</label>
+                <p>{{ student.name }}</p>
+            </div>
+            <div class="detail-item">
+                <label>Department</label>
+                <p>{{ student.department }}</p>
+            </div>
+            <div class="detail-item">
+                <label>Year</label>
+                <p>{{ student.year }}</p>
+            </div>
+            <div class="detail-item">
+                <label>Subject (Auto-assigned)</label>
+                <p>{{ teacher.subject.subject_name }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card form-container">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_internal1">Internal Assessment 1</label>
+                    {{ form.internal1 }}
+                    {{ form.internal1.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="id_internal2">Internal Assessment 2</label>
+                    {{ form.internal2 }}
+                    {{ form.internal2.errors }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_attendance">Attendance Percentage</label>
+                {{ form.attendance }}
+                {{ form.attendance.errors }}
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">
+                    {% if existing %}Update Marks{% else %}Save Marks{% endif %}
+                </button>
+                <a href="{% url 'erp:enter_marks' %}" class="btn btn-secondary">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
